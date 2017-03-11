@@ -6,6 +6,7 @@ spring:
   application:
     name: testLatticeApp
 
+
 ribbon:
   ServerListRefreshInterval: 1000
 
@@ -13,10 +14,13 @@ endpoints:
   health:
     sensitive: false
   restart:
-    enabled: true
+    enabled: false
   shutdown:
-    enabled: true
+    enabled: false
 
 people:
   name: renato moitinho dias
   age: 30
+
+logging:
+  config: classpath:logback-spring.xml

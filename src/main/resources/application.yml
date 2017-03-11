@@ -1,0 +1,9 @@
+# INFO
+
+info:
+  project:
+    groupId:@project.groupId@
+    artifactId:@project.artifactId@
+    name:@project.name@
+    version:@project.version@
+    description:@project.description@
