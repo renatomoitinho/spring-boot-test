@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user -->
+<!-- -->
+<!-- For professional support please see -->
+<!-- http://www.qos.ch/shop/products/professionalSupport -->
+<!-- -->
 <configuration>
+
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <logger name="hello" level="DEBUG"/>
+    <property scope="context" name="project.version" value="@project.version@"/>
+    <property scope="context" name="project.name" value="@project.artifactId@"/>
+    <property scope="context" name="project.log.dir" value="${LOG_ROOT_DIR}"/>
 
-    <springProfile name="staging">
-        <logger name="hello" level="TRACE"/>
-    </springProfile>
+    <appender name="A1" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <File>${project.log.dir}/${project.name}/${project.name}.log</File>
+        <encoder>
+            <pattern>[%p %d{yyyy-MM-dd HH:mm:ss,Brazil/East} v=${project.version} %C{1}] %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${project.log.dir}/logs_gz/${project.name}/${project.name}.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.springframework" level="WARN" />
+
+    <root level="INFO">
+        <appender-ref ref="A1" />
+    </root>
 </configuration>
