@@ -1,6 +1,7 @@
 package hello;
 
-import hello.context.settings.PeopleSettings;
+import hello.model.Person;
+import hello.service.PersonService;
 import hello.service.SayHello;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -25,6 +28,9 @@ public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     @Autowired
+    private PersonService personService;
+
+    @Autowired
     private SayHello sayHello;
 
     @Autowired
@@ -32,14 +38,49 @@ public class Application {
 
     @PostConstruct
     public void logSomething() {
-        logger.info("Sample info Message");
+        logger.info("Sample info Message ");
         logger.debug("Sample Trace Message");
     }
 
     @RequestMapping("/")
     @ResponseBody
-    public Map<String, String> home() {
-        return sayHello.say();
+    public Map<String, Person> home() {
+        long init = System.currentTimeMillis();
+
+        try {
+            return personService.getLikeMap("Ma");
+        } finally {
+            System.out.println( "home mls " +(System.currentTimeMillis() - init));
+
+        }
+    }
+
+    @RequestMapping("/person/{name}")
+    @ResponseBody
+    public Map<String, Person> home(@PathVariable("name") String name) {
+        long init = System.currentTimeMillis();
+
+        try {
+            return personService.getLikeMap(name);
+        } finally {
+            System.out.println("home mls " + (System.currentTimeMillis() - init));
+
+        }
+    }
+
+
+    @RequestMapping("/person/{alias}/{name}")
+    @ResponseBody
+    public List<Person> home(@PathVariable("alias") String alias, @PathVariable("name") String name) {
+        PersonService.PersonQuery personQuery = personService.getLike(alias);
+
+        long init = System.currentTimeMillis();
+
+        try {
+            return Arrays.asList(personQuery.get(name, Person.empty()));
+        } finally {
+            System.out.println( "home2 mls " +(System.currentTimeMillis() - init));
+        }
     }
 
     @RequestMapping("/get/{v}")

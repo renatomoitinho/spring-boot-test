@@ -17,12 +17,14 @@ import java.util.concurrent.TimeUnit;
 public class CacheContext {
 
     public static final String SAY_CACHE = "sayHello";
+    public static final String PERSON_CACHE = "person";
 
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
         simpleCacheManager.setCaches(Arrays.asList(
-                buildSay()
+                buildSay(),
+                personCache()
         ));
         return simpleCacheManager;
     }
@@ -34,4 +36,13 @@ public class CacheContext {
                 .build(),
                 false);
     }
+
+    private GuavaCache personCache() {
+        return new GuavaCache(PERSON_CACHE, CacheBuilder
+                .newBuilder()
+                .expireAfterWrite(1, TimeUnit.SECONDS)
+                .build(),
+                false);
+    }
+
 }
