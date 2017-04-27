@@ -52,5 +52,10 @@ public class PersonRepositoryImpl implements PersonRepository {
         return persons.stream().filter((p)-> p.getName().contains(query)).collect(Collectors.toMap(Person::getName, Function.identity()));
     }
 
+    @Override
+    public List<Person> getAll() {
+        return persons;
+    }
+
 
 }

@@ -44,11 +44,11 @@ public class Application {
 
     @RequestMapping("/")
     @ResponseBody
-    public Map<String, Person> home() {
+    public List<Person> home() {
         long init = System.currentTimeMillis();
 
         try {
-            return personService.getLikeMap("Ma");
+            return personService.geAllLikeMap();
         } finally {
             System.out.println( "home mls " +(System.currentTimeMillis() - init));
 

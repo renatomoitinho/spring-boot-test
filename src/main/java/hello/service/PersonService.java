@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,6 +28,10 @@ public class PersonService {
 
     public Map<String, Person> getLikeMap(String like) {
         return personRepository.getAsLike(like);
+    }
+
+    public List<Person> geAllLikeMap() {
+        return personRepository.getAll();
     }
 
     private PersonQuery proxify(final String key, final Class<PersonQuery> clazz) {
